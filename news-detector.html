@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake News Detector · TruthLens AI</title>
+  <meta name="description" content="Paste a news article, headline or URL and let the AI analyse whether it is likely fake or real.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="news">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal><span class="dot"></span>Fake News Detector</span>
+        <h1 data-reveal style="--d:.05s">Is this news <span class="grad-text">real or fake?</span></h1>
+        <p data-reveal style="--d:.1s">Enter a news article, a URL or just a headline. The AI analyses language, sourcing and publisher credibility, then explains its verdict.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" style="padding-top:12px">
+      <div class="container detector">
+        <form class="card" id="news-form" data-reveal novalidate>
+          <div class="form-top">
+            <h2 class="card-title mb-0"><i data-icon="search"></i>What do you want to check?</h2>
+          </div>
+          <div class="tabs tabs-block" id="news-tabs" role="tablist" aria-label="Input type" style="margin-bottom:12px">
+            <button type="button" class="tab active" data-mode="text" role="tab" aria-selected="true"><i data-icon="file"></i>Article text</button>
+            <button type="button" class="tab" data-mode="url" role="tab" aria-selected="false"><i data-icon="link"></i>URL</button>
+            <button type="button" class="tab" data-mode="headline" role="tab" aria-selected="false"><i data-icon="type"></i>Headline</button>
+          </div>
+          <p class="hint" id="mode-hint" style="margin-bottom:20px"></p>
+
+          <div class="sample-row">
+            <span class="muted">Try:</span>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample-fake"><i data-icon="xcircle"></i>Fake sample</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample-real"><i data-icon="checkcircle"></i>Real sample</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample-clear"><i data-icon="trash"></i>Clear</button>
+          </div>
+
+          <div class="field" id="field-title">
+            <label for="news-title">Headline <span class="muted">recommended</span></label>
+            <input class="input" id="news-title" type="text" placeholder="e.g. Scientists discover miracle cure doctors don't want you to know" autocomplete="off">
+          </div>
+          <div class="field" id="field-text">
+            <label for="news-text">Article text <span class="muted" id="text-label-note">required</span></label>
+            <textarea class="textarea" id="news-text" placeholder="Paste the full news article here…"></textarea>
+            <span class="counter" id="news-count">0 words</span>
+          </div>
+          <div class="field" id="field-url">
+            <label for="news-url">Source URL <span class="muted" id="url-label-note">optional</span></label>
+            <div class="input-icon"><i data-icon="link"></i><input class="input" id="news-url" type="url" inputmode="url" placeholder="https://example.com/news/article" autocomplete="off"></div>
+          </div>
+
+          <button class="btn btn-primary btn-block" type="submit"><i data-icon="cpu"></i>Analyse news with AI</button>
+          <p class="hint center" style="margin-top:12px"><i data-icon="lock"></i> Your text never leaves your device.</p>
+        </form>
+
+        <aside class="detector-aside">
+          <div class="card orb-card" data-reveal style="--d:.08s">
+            <div class="orb-stage" data-three="orb">
+              <div class="orb-fallback" aria-hidden="true">
+                <div class="ring3d"><span></span></div><div class="ring3d"><span></span></div><div class="ring3d"><span></span></div><div class="core"></div>
+              </div>
+            </div>
+            <div class="orb-caption">
+              <div class="status-line"><span class="dot"></span>Detection engine ready</div>
+              <p>7 credibility signals · explainable scoring</p>
+            </div>
+          </div>
+          <div class="card" data-reveal style="--d:.14s">
+            <h3 class="card-title"><i data-icon="target"></i>What the AI checks</h3>
+            <ul class="check-list">
+              <li><i data-icon="zap"></i><div><strong>Sensational language</strong>Clickbait, hype and conspiracy phrases</div></li>
+              <li><i data-icon="alert"></i><div><strong>Emotional manipulation</strong>Fear, anger and outrage words</div></li>
+              <li><i data-icon="users"></i><div><strong>Source attribution</strong>Named officials, studies, quotes and data</div></li>
+              <li><i data-icon="type"></i><div><strong>Writing style</strong>ALL CAPS, !!! and fragmented sentences</div></li>
+              <li><i data-icon="sparkles"></i><div><strong>Extraordinary claims</strong>Miracle cures, "share before it's deleted"</div></li>
+              <li><i data-icon="globe"></i><div><strong>Domain credibility</strong>Trusted outlets, satire and look-alike sites</div></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/three-scene.js"></script>
+</body>
+</html>

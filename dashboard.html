@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile &amp; Dashboard · TruthLens AI</title>
+  <meta name="description" content="Your detection statistics, activity and recent checks.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="dashboard">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="section-tight">
+      <div class="container">
+        <div class="card profile-card" data-reveal>
+          <div class="avatar-3d" aria-hidden="true"><div class="av" id="p-avatar">G</div></div>
+          <div class="p-main">
+            <span class="eyebrow" style="margin-bottom:10px"><span class="dot"></span>Profile / Dashboard</span>
+            <h2 id="p-name">Guest User</h2>
+            <p id="p-since" class="small"></p>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-ghost btn-sm" href="settings.html"><i data-icon="settings"></i>Edit profile</a>
+            <a class="btn btn-primary btn-sm" href="news-detector.html"><i data-icon="plus"></i>New check</a>
+          </div>
+        </div>
+
+        <div class="notice" id="dash-empty" style="margin-top:20px" hidden>
+          <i data-icon="info"></i>
+          <span style="flex:1">You haven't run any checks yet. Run a detector, or load demo data to preview the dashboard.</span>
+          <button class="btn btn-ghost btn-sm" id="demo-btn" type="button"><i data-icon="database"></i>Load demo data</button>
+        </div>
+
+        <div class="grid grid-4" style="margin-top:24px">
+          <div class="card stat-tile tilt" data-tilt-max="6" data-reveal><span class="st-label"><i data-icon="target"></i>Total checks</span><span class="st-value" id="st-total">0</span><span class="st-note">News and reviews combined</span></div>
+          <div class="card stat-tile tilt" data-tilt-max="6" data-reveal style="--d:.06s"><span class="st-label"><i data-icon="alert"></i>Flagged</span><span class="st-value" id="st-flagged">0</span><span class="st-note" id="st-flagged-note">0 fake · 0 suspicious</span></div>
+          <div class="card stat-tile tilt" data-tilt-max="6" data-reveal style="--d:.12s"><span class="st-label"><i data-icon="checkcircle"></i>Genuine / Real</span><span class="st-value" id="st-genuine">0</span><span class="st-note" id="st-genuine-note">No checks yet</span></div>
+          <div class="card stat-tile tilt" data-tilt-max="6" data-reveal style="--d:.18s"><span class="st-label"><i data-icon="brain"></i>Avg. confidence</span><span class="st-value" id="st-conf">0%</span><span class="st-note">Model certainty across checks</span></div>
+        </div>
+
+        <div class="dash-grid">
+          <section class="card" data-reveal>
+            <h2 class="card-title"><i data-icon="chart"></i>Activity</h2>
+            <p class="chart-sub">Checks per day, last 7 days</p>
+            <div class="chart-box" id="activity-chart"></div>
+          </section>
+          <section class="card" data-reveal style="--d:.08s">
+            <h2 class="card-title"><i data-icon="sliders"></i>Verdict breakdown</h2>
+            <p class="chart-sub">Share of all checks by verdict</p>
+            <div class="stackbar" id="verdict-bar" aria-hidden="true"></div>
+            <div class="legend-rows" id="verdict-legend"></div>
+          </section>
+          <section class="card" data-reveal>
+            <h2 class="card-title"><i data-icon="history"></i>Recent checks</h2>
+            <div class="mini-list" id="recent"></div>
+            <div style="margin-top:14px"><a class="btn btn-ghost btn-sm" href="history.html">View full history <i data-icon="arrow"></i></a></div>
+          </section>
+          <section class="card" data-reveal style="--d:.08s">
+            <h2 class="card-title"><i data-icon="layers"></i>Detector usage</h2>
+            <p class="chart-sub">Which detector you use most</p>
+            <div id="split"></div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+</body>
+</html>

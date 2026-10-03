@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TruthLens AI · Fake News &amp; Fake Review Detector</title>
+  <meta name="description" content="TruthLens AI detects fake news and fake product reviews with explainable AI: credibility score, confidence, reasons and evidence.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow" data-reveal><span class="dot"></span>AI-powered truth detection</span>
+          <h1 data-reveal style="--d:.05s">Spot <span class="grad-text">fake news</span> &amp; <span class="grad-text">fake reviews</span> in seconds.</h1>
+          <p class="lead" data-reveal style="--d:.1s">TruthLens AI reads news articles, links and product reviews the way a fact-checker would. It flags manipulation, scores credibility and explains every decision with evidence from the text.</p>
+          <div class="btn-row" data-reveal style="--d:.15s">
+            <a class="btn btn-primary" href="news-detector.html"><i data-icon="search"></i>Check news</a>
+            <a class="btn btn-ghost" href="review-detector.html"><i data-icon="star"></i>Check a review</a>
+          </div>
+          <div class="hero-chips" data-reveal style="--d:.2s">
+            <span class="chip"><i data-icon="zap"></i>Instant results</span>
+            <span class="chip"><i data-icon="brain"></i>Explainable AI</span>
+            <span class="chip"><i data-icon="lock"></i>Private, runs in your browser</span>
+          </div>
+        </div>
+
+        <div class="hero-visual" data-three="hero">
+          <div class="orb-fallback" aria-hidden="true">
+            <div class="ring3d"><span></span></div>
+            <div class="ring3d"><span></span></div>
+            <div class="ring3d"><span></span></div>
+            <div class="ring3d"><span></span></div>
+            <div class="core"></div>
+          </div>
+          <div class="floating-badge fb-1"><span class="dot" style="background:var(--bad)"></span><div>Fake news detected<small>Sensational wording</small></div></div>
+          <div class="floating-badge fb-2"><span class="dot" style="background:var(--good)"></span><div>Trusted source<small>Cites officials &amp; data</small></div></div>
+          <div class="floating-badge fb-3"><span class="dot" style="background:var(--warn)"></span><div>Suspicious review<small>Excessive hype</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick detect -->
+    <section class="section-tight" id="quick">
+      <div class="container">
+        <form class="card quick-card" id="quick-form" data-reveal novalidate>
+          <div class="form-top">
+            <h2 class="card-title mb-0"><i data-icon="zap"></i>Quick detect</h2>
+            <div class="tabs" id="quick-tabs" role="tablist" aria-label="What are you checking?">
+              <button type="button" class="tab active" data-type="news" role="tab" aria-selected="true"><i data-icon="news"></i>News</button>
+              <button type="button" class="tab" data-type="review" role="tab" aria-selected="false"><i data-icon="star"></i>Review</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="quick-text">Text to analyse <span class="counter" id="quick-count">0 words</span></label>
+            <textarea class="textarea" id="quick-text" placeholder="Paste a news headline or article here… e.g. &quot;SHOCKING!!! Miracle cure doctors don't want you to know&quot;"></textarea>
+          </div>
+          <div class="btn-row" style="justify-content:space-between;align-items:center">
+            <button type="button" class="btn btn-ghost btn-sm" id="quick-sample"><i data-icon="sparkles"></i>Try a sample</button>
+            <button class="btn btn-primary" type="submit"><i data-icon="cpu"></i>Analyse with AI</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow"><span class="dot"></span>Platform</span>
+          <h2>One platform, two <span class="grad-text">AI detectors</span></h2>
+          <p>Everything you need to check what you read online, from breaking headlines to five-star product reviews.</p>
+        </div>
+        <div class="grid grid-3">
+          <a class="card tilt" href="news-detector.html" data-reveal>
+            <div class="icon-box depth-2"><i data-icon="search"></i></div>
+            <h3 class="depth-1">Fake News Detector</h3>
+            <p class="depth-1 mb-0">Paste an article, a headline or a link. The AI checks clickbait language, emotional manipulation, sources and domain reputation.</p>
+          </a>
+          <a class="card tilt" href="review-detector.html" data-reveal style="--d:.06s">
+            <div class="icon-box depth-2"><i data-icon="star"></i></div>
+            <h3 class="depth-1">Fake Review Detector</h3>
+            <p class="depth-1 mb-0">Spot paid, bot-written or incentivised reviews from hype, missing product detail, repetition and rating mismatch.</p>
+          </a>
+          <a class="card tilt" href="result.html" data-reveal style="--d:.12s">
+            <div class="icon-box depth-2"><i data-icon="target"></i></div>
+            <h3 class="depth-1">Score &amp; Confidence</h3>
+            <p class="depth-1 mb-0">Every check gets a fake-likelihood score, a confidence level and a clear verdict: Fake, Suspicious or Genuine.</p>
+          </a>
+          <a class="card tilt" href="how-it-works.html" data-reveal>
+            <div class="icon-box depth-2"><i data-icon="brain"></i></div>
+            <h3 class="depth-1">Explainable Reasons</h3>
+            <p class="depth-1 mb-0">No black box. See the exact phrases that raised a flag, highlighted right inside the text, plus a signal-by-signal breakdown.</p>
+          </a>
+          <a class="card tilt" href="history.html" data-reveal style="--d:.06s">
+            <div class="icon-box depth-2"><i data-icon="history"></i></div>
+            <h3 class="depth-1">History &amp; Dashboard</h3>
+            <p class="depth-1 mb-0">All your checks are saved on your device. Revisit results and track your stats over time.</p>
+          </a>
+          <a class="card tilt" href="verified-news.html" data-reveal style="--d:.12s">
+            <div class="icon-box depth-2"><i data-icon="shield"></i></div>
+            <h3 class="depth-1">Verified News Hub</h3>
+            <p class="depth-1 mb-0">Browse fact-checked claims and a directory of trusted, independent fact-checking organisations.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats band -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="stats-band">
+          <div class="card stat-pill tilt" data-reveal><div class="num grad-text"><span data-count="2">2</span></div><p>AI detectors</p></div>
+          <div class="card stat-pill tilt" data-reveal style="--d:.06s"><div class="num grad-text"><span data-count="14">14</span></div><p>Detection signals</p></div>
+          <div class="card stat-pill tilt" data-reveal style="--d:.12s"><div class="num grad-text">&lt;1s</div><p>Analysis time</p></div>
+          <div class="card stat-pill tilt" data-reveal style="--d:.18s"><div class="num grad-text"><span data-count="100" data-suffix="%">100%</span></div><p>Private, nothing uploaded</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works preview -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow"><span class="dot"></span>How it works</span>
+          <h2>From text to verdict in <span class="grad-text">4 steps</span></h2>
+          <p>A transparent pipeline inspired by how professional fact-checkers and opinion-spam research evaluate content.</p>
+        </div>
+        <div class="steps">
+          <div class="card step tilt" data-reveal><div class="icon-box depth-2"><i data-icon="file"></i></div><span class="step-num depth-1">STEP 01</span><h3 class="depth-1">Paste</h3><p class="depth-1">Enter a news article, headline, URL or product review.</p></div>
+          <div class="card step tilt" data-reveal style="--d:.06s"><div class="icon-box depth-2"><i data-icon="layers"></i></div><span class="step-num depth-1">STEP 02</span><h3 class="depth-1">Extract</h3><p class="depth-1">The text is cleaned and split into linguistic features.</p></div>
+          <div class="card step tilt" data-reveal style="--d:.12s"><div class="icon-box depth-2"><i data-icon="cpu"></i></div><span class="step-num depth-1">STEP 03</span><h3 class="depth-1">Score</h3><p class="depth-1">Weighted signals feed a model that outputs fake likelihood.</p></div>
+          <div class="card step tilt" data-reveal style="--d:.18s"><div class="icon-box depth-2"><i data-icon="brain"></i></div><span class="step-num depth-1">STEP 04</span><h3 class="depth-1">Explain</h3><p class="depth-1">You get a verdict, confidence, reasons and highlighted evidence.</p></div>
+        </div>
+        <div class="center" style="margin-top:32px" data-reveal><a class="btn btn-ghost" href="how-it-works.html">Learn how the AI works <i data-icon="arrow"></i></a></div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="card cta-card" data-reveal>
+          <span class="eyebrow"><span class="dot"></span>Think before you share</span>
+          <h2>Not sure if it's real? <span class="grad-text">Check it now.</span></h2>
+          <p>Misinformation spreads faster than corrections. A five-second check can stop a fake story or a fake review from fooling you.</p>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="news-detector.html"><i data-icon="search"></i>Start detecting</a>
+            <a class="btn btn-ghost" href="verified-news.html"><i data-icon="shield"></i>Browse verified news</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/three-scene.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings · TruthLens AI</title>
+  <meta name="description" content="Account, appearance, detection and data settings.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="settings">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal><span class="dot"></span>Settings</span>
+        <h1 data-reveal style="--d:.05s">Make it <span class="grad-text">yours</span></h1>
+        <p data-reveal style="--d:.1s">Manage your profile, appearance, detection behaviour and data. Changes save automatically on this device.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" style="padding-top:12px">
+      <div class="container settings-layout">
+        <nav class="card settings-nav" aria-label="Settings sections" data-reveal>
+          <a href="#account"><i data-icon="user"></i>Account</a>
+          <a href="#appearance"><i data-icon="palette"></i>Appearance</a>
+          <a href="#detection"><i data-icon="cpu"></i>Detection</a>
+          <a href="#data"><i data-icon="database"></i>Data &amp; privacy</a>
+        </nav>
+
+        <div class="settings-stack">
+          <form class="card" id="account" data-reveal novalidate>
+            <h2 class="card-title"><i data-icon="user"></i>Account</h2>
+            <div class="field-row">
+              <div class="field">
+                <label for="s-name">Display name</label>
+                <input class="input" id="s-name" type="text" maxlength="40" autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="s-email">Email <span class="muted">optional, stored locally</span></label>
+                <input class="input" id="s-email" type="email" maxlength="80" autocomplete="email" placeholder="you@example.com">
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm" type="submit"><i data-icon="check"></i>Save profile</button>
+          </form>
+
+          <section class="card" id="appearance" data-reveal>
+            <h2 class="card-title"><i data-icon="palette"></i>Appearance</h2>
+            <div class="setting-block">
+              <div><strong>Theme</strong><span class="desc">Dark is optimised for the 3D visuals.</span></div>
+              <div class="tabs">
+                <button type="button" class="tab" data-theme-opt="dark"><i data-icon="moon"></i>Dark</button>
+                <button type="button" class="tab" data-theme-opt="light"><i data-icon="sun"></i>Light</button>
+              </div>
+            </div>
+            <div class="setting-block">
+              <div><strong>Accent colour</strong><span class="desc">Used for buttons, highlights and the 3D scene.</span></div>
+              <div class="swatches">
+                <button type="button" class="swatch" data-accent-opt="blue" style="background:linear-gradient(135deg,#6d8cff,#b26bff)" aria-label="Blue accent"></button>
+                <button type="button" class="swatch" data-accent-opt="violet" style="background:linear-gradient(135deg,#9b6bff,#ff6bd5)" aria-label="Violet accent"></button>
+                <button type="button" class="swatch" data-accent-opt="cyan" style="background:linear-gradient(135deg,#22c3ee,#6d8cff)" aria-label="Cyan accent"></button>
+                <button type="button" class="swatch" data-accent-opt="pink" style="background:linear-gradient(135deg,#f0629f,#ff9d5c)" aria-label="Pink accent"></button>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <div><strong>3D effects</strong><span>WebGL scenes, card tilt and depth animations.</span></div>
+              <label class="switch"><input type="checkbox" id="s-3d"><span class="slider"></span><span class="sr-only">3D effects</span></label>
+            </div>
+            <div class="toggle-row">
+              <div><strong>Reduce motion</strong><span>Minimise animations and transitions.</span></div>
+              <label class="switch"><input type="checkbox" id="s-motion"><span class="slider"></span><span class="sr-only">Reduce motion</span></label>
+            </div>
+          </section>
+
+          <section class="card" id="detection" data-reveal>
+            <h2 class="card-title"><i data-icon="cpu"></i>Detection</h2>
+            <div class="setting-block">
+              <div><strong>Sensitivity</strong><span class="desc">Strict flags content earlier; lenient gives more benefit of the doubt.</span></div>
+              <div class="tabs">
+                <button type="button" class="tab" data-sens="lenient">Lenient</button>
+                <button type="button" class="tab" data-sens="balanced">Balanced</button>
+                <button type="button" class="tab" data-sens="strict">Strict</button>
+              </div>
+            </div>
+            <div class="toggle-row">
+              <div><strong>Save checks to history</strong><span>Keep results so you can revisit them later.</span></div>
+              <label class="switch"><input type="checkbox" id="s-save"><span class="slider"></span><span class="sr-only">Save checks to history</span></label>
+            </div>
+            <div class="toggle-row">
+              <div><strong>Highlight evidence</strong><span>Mark suspicious and credible phrases in result text.</span></div>
+              <label class="switch"><input type="checkbox" id="s-highlight"><span class="slider"></span><span class="sr-only">Highlight evidence</span></label>
+            </div>
+          </section>
+
+          <section class="card" id="data" data-reveal>
+            <h2 class="card-title"><i data-icon="database"></i>Data &amp; privacy</h2>
+            <div class="notice" style="margin-bottom:16px"><i data-icon="lock"></i><span>All data stays in this browser's local storage. Nothing is uploaded. <b id="s-stored"></b>.</span></div>
+            <div class="btn-row">
+              <button class="btn btn-ghost btn-sm" id="s-export" type="button"><i data-icon="download"></i>Export my data</button>
+              <button class="btn btn-danger btn-sm" id="s-clear" type="button"><i data-icon="trash"></i>Clear history</button>
+              <button class="btn btn-ghost btn-sm" id="s-reset" type="button"><i data-icon="refresh"></i>Reset settings</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works · TruthLens AI</title>
+  <meta name="description" content="How the TruthLens AI detection pipeline analyses news and reviews.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="how">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal><span class="dot"></span>How It Works</span>
+        <h1 data-reveal style="--d:.05s">Inside the <span class="grad-text">detection engine</span></h1>
+        <p data-reveal style="--d:.1s">TruthLens AI uses an explainable natural-language model. Instead of a black box, every verdict is built from signals you can see and understand.</p>
+      </div>
+    </section>
+
+    <!-- Pipeline -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="steps five pipeline">
+          <div class="step" data-reveal><div class="icon-box"><i data-icon="file"></i></div><span class="step-num">01 · INPUT</span><h3>Collect</h3><p>Article text, headline, URL or a product review with rating.</p></div>
+          <div class="step" data-reveal style="--d:.06s"><div class="icon-box"><i data-icon="type"></i></div><span class="step-num">02 · PREPROCESS</span><h3>Clean</h3><p>Normalise case, split sentences, tokenise words, detect numbers and quotes.</p></div>
+          <div class="step" data-reveal style="--d:.12s"><div class="icon-box"><i data-icon="layers"></i></div><span class="step-num">03 · FEATURES</span><h3>Extract</h3><p>Match lexicons, count punctuation and caps, measure repetition and detail.</p></div>
+          <div class="step" data-reveal style="--d:.18s"><div class="icon-box"><i data-icon="cpu"></i></div><span class="step-num">04 · MODEL</span><h3>Score</h3><p>Seven weighted risk signals combine through a logistic function.</p></div>
+          <div class="step" data-reveal style="--d:.24s"><div class="icon-box"><i data-icon="brain"></i></div><span class="step-num">05 · EXPLAIN</span><h3>Explain</h3><p>Verdict, confidence, reasons and evidence highlighted in the text.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D stack -->
+    <section class="section">
+      <div class="container stack-wrap">
+        <div class="stack3d" aria-hidden="true" data-reveal>
+          <div class="layers">
+            <div class="layer" style="--i:0">1 · Raw input</div>
+            <div class="layer" style="--i:1">2 · Tokens &amp; features</div>
+            <div class="layer" style="--i:2">3 · Signal detectors</div>
+            <div class="layer" style="--i:3">4 · Weighted scoring</div>
+            <div class="layer" style="--i:4">5 · Verdict &amp; reasons</div>
+          </div>
+        </div>
+        <div data-reveal style="--d:.08s">
+          <span class="eyebrow"><span class="dot"></span>Model architecture</span>
+          <h2>Layered, <span class="grad-text">transparent</span> scoring</h2>
+          <p>Each layer turns the text into something more abstract. Raw words become features such as hype terms, attribution phrases, ALL-CAPS ratio and feature mentions. Detectors convert those features into risk signals from 0 to 100.</p>
+          <p>The signals are averaged with weights, blended with the two strongest signals so one severe red flag is never hidden, and passed through a logistic curve that outputs the <b>fake likelihood</b>. Hover the stack to separate the layers.</p>
+          <pre class="code"><span class="c">// simplified scoring model</span>
+<span class="k">weighted</span> = Σ(riskᵢ × weightᵢ) / Σ weightᵢ
+<span class="k">x</span>        = 0.75 × weighted + 0.25 × avg(top 2 risks)
+<span class="k">fake %</span>   = 100 / (1 + e^(−(x − c) / 10))
+<span class="c">// c = 30 strict · 36 balanced · 42 lenient</span></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Signals -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow"><span class="dot"></span>Signals</span>
+          <h2>What each detector <span class="grad-text">looks for</span></h2>
+          <p>Hover or tap a card to flip it and see why the signal matters.</p>
+        </div>
+
+        <h3 class="card-title" data-reveal><i data-icon="news"></i>Fake News Detector</h3>
+        <div class="grid grid-3" style="margin-bottom:40px">
+          <article class="flip" data-reveal><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="zap"></i></div><h3>Sensational language</h3><p>Clickbait and conspiracy phrases such as "shocking", "exposed" or "they don't want you to know".</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Fabricated stories are written to go viral. Hype grabs attention while credible newsrooms follow neutral style guides.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.06s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="alert"></i></div><h3>Emotional manipulation</h3><p>Fear, anger and outrage words: "terrifying", "traitors", "disgusting".</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Strong emotions reduce critical thinking and increase sharing, which is exactly what misinformation relies on.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.12s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="users"></i></div><h3>Source attribution</h3><p>Named officials, studies, agencies, quotes and data versus vague "sources say".</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Real reporting lets you trace every claim back to someone accountable. Anonymous, unverifiable sourcing is a red flag.</p></div>
+          </div></article>
+          <article class="flip" data-reveal><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="type"></i></div><h3>Writing style</h3><p>ALL-CAPS shouting, repeated "!!!", emoji and very short fragmented sentences.</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Professional editors remove shouting and excessive punctuation. These patterns are typical of chain messages.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.06s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="sparkles"></i></div><h3>Extraordinary claims</h3><p>Miracle cures, "100% guaranteed", and pressure to "share before it's deleted".</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Extraordinary claims need extraordinary evidence. Health hoaxes are among the most frequently debunked topics.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.12s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="globe"></i></div><h3>Domain credibility</h3><p>Trusted outlets, official .gov/.edu, satire sites, look-alike domains and URL shorteners.</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Fake sites often imitate real brands (e.g. "news.com.co") or use cheap domain endings to look legitimate.</p></div>
+          </div></article>
+        </div>
+
+        <h3 class="card-title" data-reveal><i data-icon="star"></i>Fake Review Detector</h3>
+        <div class="grid grid-3">
+          <article class="flip" data-reveal><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="zap"></i></div><h3>Extreme sentiment</h3><p>Stacks of superlatives ("amazing", "perfect", "must buy") or pure rage, with no nuance.</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Paid reviews over-praise to lift ratings, while attack reviews from competitors over-criticise.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.06s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="file"></i></div><h3>Product detail</h3><p>Mentions of real features (battery, fit, delivery), usage time and context.</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Fake reviewers have never used the product, so their text is generic and could describe anything.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.12s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="refresh"></i></div><h3>Repetition</h3><p>Repeated words and phrases, and product names stuffed in several times.</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Template and bot-generated reviews reuse phrasing, and keyword stuffing is an SEO trick in paid reviews.</p></div>
+          </div></article>
+          <article class="flip" data-reveal><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="link"></i></div><h3>Promotion &amp; incentives</h3><p>Links, coupon codes, "visit our store" or "received free in exchange for a review".</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Honest reviews don't advertise. Incentivised reviews are measurably more positive than organic ones.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.06s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="user"></i></div><h3>Linguistic pattern</h3><p>Heavy first-person focus ("I, me, my"), ALL-CAPS and emoji spam.</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Research on deceptive opinion spam (Ott et al., 2011) found fabricated reviews use more first-person words and less concrete detail.</p></div>
+          </div></article>
+          <article class="flip" data-reveal style="--d:.12s"><div class="flip-inner">
+            <div class="flip-face"><div class="icon-box"><i data-icon="star"></i></div><h3>Rating consistency</h3><p>Does a 5-star rating come with negative text, or a 1-star with praise? Is it a verified purchase?</p><p class="hint"><i data-icon="refresh"></i>Flip for why</p></div>
+            <div class="flip-face flip-back"><h3>Why it matters</h3><p>Mismatches reveal copy-pasted or manipulated reviews, and unverified buyers are more likely to be fake.</p></div>
+          </div></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Score bands -->
+    <section class="section-tight">
+      <div class="container">
+        <div class="card" data-reveal>
+          <h2 class="card-title"><i data-icon="target"></i>Reading the score</h2>
+          <p>The <b>fake likelihood</b> is the probability the content is fake. The <b>confidence</b> shows how sure the model is, and it drops for very short inputs or scores close to 50%.</p>
+          <div class="bands">
+            <div class="band good"><b>0 – 39%</b><strong>Likely Real / Genuine</strong><p>Neutral language, sources and specific detail. No major red flags.</p></div>
+            <div class="band warn"><b>40 – 64%</b><strong>Suspicious, verify it</strong><p>Mixed signals. Cross-check with trusted sources before trusting or sharing.</p></div>
+            <div class="band bad"><b>65 – 100%</b><strong>Likely Fake</strong><p>Strong manipulation patterns. Do not share without independent confirmation.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow"><span class="dot"></span>FAQ</span>
+          <h2>Questions &amp; <span class="grad-text">limitations</span></h2>
+        </div>
+        <div class="faq" data-reveal>
+          <details><summary>Is the AI always right?<i data-icon="plus"></i></summary><p>No automated detector is perfect. TruthLens AI looks for patterns that commonly appear in fake content, so well-written misinformation can score low and unusual genuine writing can score high. Use it as a first filter, not a final judgement.</p></details>
+          <details><summary>Does it check facts against the internet?<i data-icon="plus"></i></summary><p>The current version analyses how content is written and where it comes from, not whether each fact is true. That is why the Verified News page links to professional fact-checkers for claim-level verification.</p></details>
+          <details><summary>Is my data sent anywhere?<i data-icon="plus"></i></summary><p>No. All analysis runs in your browser with JavaScript, and history is stored in your browser's local storage. You can export or delete it at any time from Settings.</p></details>
+          <details><summary>What does the sensitivity setting do?<i data-icon="plus"></i></summary><p>It shifts the centre of the scoring curve. "Strict" flags content earlier (fewer missed fakes, more false alarms) and "Lenient" does the opposite. "Balanced" is the default.</p></details>
+          <details><summary>How could this be improved with machine learning?<i data-icon="plus"></i></summary><p>The same signals can be used as features for a supervised model such as Logistic Regression, Random Forest or a fine-tuned transformer (BERT), trained on public datasets like LIAR or FakeNewsNet for news and labelled opinion-spam corpora for reviews.</p></details>
+        </div>
+        <div class="center" style="margin-top:36px" data-reveal>
+          <div class="btn-row" style="justify-content:center">
+            <a class="btn btn-primary" href="news-detector.html"><i data-icon="search"></i>Try the news detector</a>
+            <a class="btn btn-ghost" href="review-detector.html"><i data-icon="star"></i>Try the review detector</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+</body>
+</html>

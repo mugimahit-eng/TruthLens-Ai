@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Review Detector · TruthLens AI</title>
+  <meta name="description" content="Paste a product review and let the AI check whether it looks genuine or suspicious.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="review">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal><span class="dot"></span>Fake Review Detector</span>
+        <h1 data-reveal style="--d:.05s">Can you <span class="grad-text">trust this review?</span></h1>
+        <p data-reveal style="--d:.1s">Paste a product review. The AI checks hype, product detail, repetition, promotion and rating consistency to tell genuine from suspicious.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" style="padding-top:12px">
+      <div class="container detector">
+        <form class="card" id="review-form" data-reveal novalidate>
+          <div class="form-top">
+            <h2 class="card-title mb-0"><i data-icon="message"></i>Review details</h2>
+          </div>
+
+          <div class="sample-row">
+            <span class="muted">Try:</span>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample-fake"><i data-icon="xcircle"></i>Fake sample</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample-real"><i data-icon="checkcircle"></i>Genuine sample</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="sample-clear"><i data-icon="trash"></i>Clear</button>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="review-product">Product name <span class="muted">optional</span></label>
+              <input class="input" id="review-product" type="text" placeholder="e.g. SoundWave 300 Headphones" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="review-category">Category</label>
+              <select class="select" id="review-category">
+                <option>Electronics</option>
+                <option>Fashion</option>
+                <option>Home &amp; Kitchen</option>
+                <option>Beauty</option>
+                <option>Books</option>
+                <option>Food &amp; Grocery</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <span class="field-label">Star rating <span class="muted" id="rating-label">not rated</span></span>
+              <div class="stars" id="stars" role="group" aria-label="Star rating"></div>
+            </div>
+            <div class="field">
+              <label for="review-verified">Verified purchase?</label>
+              <select class="select" id="review-verified">
+                <option value="unknown">Unknown</option>
+                <option value="yes">Yes, verified</option>
+                <option value="no">No, not verified</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="review-text">Review text <span class="muted">required</span></label>
+            <textarea class="textarea" id="review-text" placeholder="Paste the customer review here…"></textarea>
+            <span class="counter" id="review-count">0 words</span>
+          </div>
+
+          <button class="btn btn-primary btn-block" type="submit"><i data-icon="cpu"></i>Analyse review with AI</button>
+          <p class="hint center" style="margin-top:12px"><i data-icon="lock"></i> Your text never leaves your device.</p>
+        </form>
+
+        <aside class="detector-aside">
+          <div class="card orb-card" data-reveal style="--d:.08s">
+            <div class="orb-stage" data-three="orb">
+              <div class="orb-fallback" aria-hidden="true">
+                <div class="ring3d"><span></span></div><div class="ring3d"><span></span></div><div class="ring3d"><span></span></div><div class="core"></div>
+              </div>
+            </div>
+            <div class="orb-caption">
+              <div class="status-line"><span class="dot"></span>Review engine ready</div>
+              <p>7 authenticity signals · opinion-spam patterns</p>
+            </div>
+          </div>
+          <div class="card" data-reveal style="--d:.14s">
+            <h3 class="card-title"><i data-icon="target"></i>What the AI checks</h3>
+            <ul class="check-list">
+              <li><i data-icon="zap"></i><div><strong>Extreme sentiment</strong>Over-the-top praise or rage with no nuance</div></li>
+              <li><i data-icon="file"></i><div><strong>Product detail</strong>Real features, usage time and experience</div></li>
+              <li><i data-icon="refresh"></i><div><strong>Repetition</strong>Repeated phrases and product-name stuffing</div></li>
+              <li><i data-icon="link"></i><div><strong>Promotion</strong>Links, coupon codes and "received free"</div></li>
+              <li><i data-icon="user"></i><div><strong>Linguistic pattern</strong>Heavy "I / me / my", caps and emoji</div></li>
+              <li><i data-icon="star"></i><div><strong>Rating consistency</strong>Does the star rating match the text?</div></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/three-scene.js"></script>
+</body>
+</html>

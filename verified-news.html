@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verified News · TruthLens AI</title>
+  <meta name="description" content="Fact-checked claims and trusted fact-checking sources.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="verified">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal><span class="dot"></span>Verified News</span>
+        <h1 data-reveal style="--d:.05s">Fact-checked <span class="grad-text">claims &amp; sources</span></h1>
+        <p data-reveal style="--d:.1s">Popular claims that have already been checked, plus a directory of independent fact-checkers you can rely on.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" style="padding-top:12px">
+      <div class="container">
+        <div class="filter-bar" data-reveal>
+          <div class="chips" id="fact-verdicts" role="group" aria-label="Filter by verdict">
+            <button type="button" class="chip-btn active" data-v="all" aria-pressed="true">All</button>
+            <button type="button" class="chip-btn" data-v="True" aria-pressed="false">True</button>
+            <button type="button" class="chip-btn" data-v="False" aria-pressed="false">False</button>
+            <button type="button" class="chip-btn" data-v="Misleading" aria-pressed="false">Misleading</button>
+          </div>
+          <div class="btn-row" style="gap:10px;flex:1;justify-content:flex-end;min-width:min(100%,420px)">
+            <div class="input-icon" style="flex:1;min-width:180px"><i data-icon="search"></i><input class="input" id="fact-search" type="search" placeholder="Search claims…" aria-label="Search claims"></div>
+            <select class="select" id="fact-cat" aria-label="Filter by category" style="width:auto"></select>
+          </div>
+        </div>
+        <p class="summary-line" id="fact-count"></p>
+        <div class="grid grid-3 fact-grid" id="fact-grid"></div>
+        <div class="notice" style="margin-top:24px" data-reveal><i data-icon="info"></i><span>These are well-documented, widely fact-checked claims curated for this project. Follow each source link for the publisher's own guidance, and use the fact-checkers below for new or breaking stories.</span></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <span class="eyebrow"><span class="dot"></span>Trusted sources</span>
+          <h2>Independent <span class="grad-text">fact-checkers</span></h2>
+          <p>When a story matters, check it with organisations whose job is verification.</p>
+        </div>
+        <div class="grid grid-3" id="source-grid"></div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container">
+        <div class="card" data-reveal>
+          <h2 class="card-title"><i data-icon="shield"></i>5 quick ways to verify news yourself</h2>
+          <div class="grid grid-3" style="margin-top:8px">
+            <div><strong>1. Check the source</strong><p class="small">Is the website a known publisher? Look for an "About" page and real contact details.</p></div>
+            <div><strong>2. Read beyond the headline</strong><p class="small">Clickbait headlines often say something the article itself doesn't support.</p></div>
+            <div><strong>3. Look for other coverage</strong><p class="small">Real major news is reported by several independent outlets.</p></div>
+            <div><strong>4. Check the date</strong><p class="small">Old stories are often re-shared as if they were new.</p></div>
+            <div><strong>5. Reverse-search images</strong><p class="small">Photos are frequently taken out of context from unrelated events.</p></div>
+            <div><strong>Still unsure?</strong><p class="small"><a href="news-detector.html" style="color:var(--accent);font-weight:600">Run it through the Fake News Detector →</a></p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/pages.js"></script>
+</body>
+</html>
