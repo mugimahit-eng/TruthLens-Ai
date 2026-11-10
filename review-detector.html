@@ -80,7 +80,7 @@
           </div>
 
           <button class="btn btn-primary btn-block" type="submit"><i data-icon="cpu"></i>Analyse review with AI</button>
-          <p class="hint center" style="margin-top:12px"><i data-icon="lock"></i> Your text never leaves your device.</p>
+          <p class="hint center" style="margin-top:12px" data-engine-privacy><i data-icon="lock"></i> Your text never leaves your device.</p>
         </form>
 
         <aside class="detector-aside">
@@ -91,8 +91,8 @@
               </div>
             </div>
             <div class="orb-caption">
-              <div class="status-line"><span class="dot"></span>Review engine ready</div>
-              <p>7 authenticity signals · opinion-spam patterns</p>
+              <div class="status-line" data-engine-status="Review engine"><span class="dot"></span>Review engine ready</div>
+              <p data-engine-detail="review">7 authenticity signals · ML ensemble</p>
             </div>
           </div>
           <div class="card" data-reveal style="--d:.14s">
@@ -104,6 +104,7 @@
               <li><i data-icon="link"></i><div><strong>Promotion</strong>Links, coupon codes and "received free"</div></li>
               <li><i data-icon="user"></i><div><strong>Linguistic pattern</strong>Heavy "I / me / my", caps and emoji</div></li>
               <li><i data-icon="star"></i><div><strong>Rating consistency</strong>Does the star rating match the text?</div></li>
+              <li><i data-icon="cpu"></i><div><strong>Machine learning</strong>Naive Bayes + Logistic Regression trained on labelled reviews</div></li>
             </ul>
           </div>
         </aside>
@@ -115,6 +116,7 @@
   <script src="js/data.js"></script>
   <script src="js/analyzer.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/pages.js"></script>
   <script src="js/three-scene.js"></script>
 </body>

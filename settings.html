@@ -81,6 +81,21 @@
           <section class="card" id="detection" data-reveal>
             <h2 class="card-title"><i data-icon="cpu"></i>Detection</h2>
             <div class="setting-block">
+              <div><strong>Analysis engine</strong><span class="desc">Auto uses the Node.js backend when the site is served by <code>server.js</code>, otherwise a background Web Worker in your browser. Browser only never sends text to a server.</span></div>
+              <div class="tabs">
+                <button type="button" class="tab" data-engine-opt="auto"><i data-icon="zap"></i>Auto</button>
+                <button type="button" class="tab" data-engine-opt="local"><i data-icon="lock"></i>Browser only</button>
+              </div>
+            </div>
+            <div class="engine-status-row">
+              <span class="status-line" id="s-engine-status"><span class="dot off"></span>Connecting to the engine…</span>
+              <a class="btn btn-ghost btn-sm" href="model.html"><i data-icon="chart"></i>Open ML Lab</a>
+            </div>
+            <div class="toggle-row">
+              <div><strong>Machine-learning ensemble</strong><span>Blend the rule engine with trained Naive Bayes and Logistic Regression models.</span></div>
+              <label class="switch"><input type="checkbox" id="s-ml"><span class="slider"></span><span class="sr-only">Machine-learning ensemble</span></label>
+            </div>
+            <div class="setting-block">
               <div><strong>Sensitivity</strong><span class="desc">Strict flags content earlier; lenient gives more benefit of the doubt.</span></div>
               <div class="tabs">
                 <button type="button" class="tab" data-sens="lenient">Lenient</button>
@@ -100,7 +115,7 @@
 
           <section class="card" id="data" data-reveal>
             <h2 class="card-title"><i data-icon="database"></i>Data &amp; privacy</h2>
-            <div class="notice" style="margin-bottom:16px"><i data-icon="lock"></i><span>All data stays in this browser's local storage. Nothing is uploaded. <b id="s-stored"></b>.</span></div>
+            <div class="notice" style="margin-bottom:16px"><i data-icon="lock"></i><span>History and settings stay in this browser's local storage. Feedback you give on a result is used to train the active engine (this browser, or your TruthLens server when connected). <b id="s-stored"></b>.</span></div>
             <div class="btn-row">
               <button class="btn btn-ghost btn-sm" id="s-export" type="button"><i data-icon="download"></i>Export my data</button>
               <button class="btn btn-danger btn-sm" id="s-clear" type="button"><i data-icon="trash"></i>Clear history</button>
@@ -116,6 +131,7 @@
   <script src="js/data.js"></script>
   <script src="js/analyzer.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/pages.js"></script>
 </body>
 </html>

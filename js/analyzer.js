@@ -4,10 +4,11 @@
    Each detector extracts linguistic features, turns them into risk
    "signals" (0–100), combines them with weights, and maps the result to a
    fake-likelihood probability with a logistic function.
+   Runs unchanged in the browser, a Web Worker and the Node.js backend.
    ========================================================================== */
-(function () {
+(function (G) {
   'use strict';
-  var TL = (window.TL = window.TL || {});
+  var TL = (G.TL = G.TL || {});
 
   /* ---------------- Lexicons ---------------- */
   var NEWS = {
@@ -409,5 +410,7 @@
     return out + escapeHTML(text.slice(last));
   }
 
-  TL.analyzer = { analyzeNews: analyzeNews, analyzeReview: analyzeReview, analyzeUrl: analyzeUrl, highlight: highlight, escapeHTML: escapeHTML };
-})();
+  TL.analyzer = { analyzeNews: analyzeNews, analyzeReview: analyzeReview, analyzeUrl: analyzeUrl, highlight: highlight, escapeHTML: escapeHTML,
+    verdictFor: verdictFor, summaryFor: summaryFor, uid: uid };
+  if (typeof module === 'object' && module.exports) module.exports = TL.analyzer;
+})(typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this);

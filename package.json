@@ -1,0 +1,13 @@
+{
+  "name": "truthlens-ai",
+  "version": "2.0.0",
+  "description": "Fake news and fake review detector: explainable rules + machine-learning ensemble, with a zero-dependency Node.js backend.",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

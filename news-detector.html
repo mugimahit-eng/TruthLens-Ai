@@ -60,7 +60,7 @@
           </div>
 
           <button class="btn btn-primary btn-block" type="submit"><i data-icon="cpu"></i>Analyse news with AI</button>
-          <p class="hint center" style="margin-top:12px"><i data-icon="lock"></i> Your text never leaves your device.</p>
+          <p class="hint center" style="margin-top:12px" data-engine-privacy><i data-icon="lock"></i> Your text never leaves your device.</p>
         </form>
 
         <aside class="detector-aside">
@@ -71,8 +71,8 @@
               </div>
             </div>
             <div class="orb-caption">
-              <div class="status-line"><span class="dot"></span>Detection engine ready</div>
-              <p>7 credibility signals · explainable scoring</p>
+              <div class="status-line" data-engine-status="Detection engine"><span class="dot"></span>Detection engine ready</div>
+              <p data-engine-detail="news">7 credibility signals · ML ensemble</p>
             </div>
           </div>
           <div class="card" data-reveal style="--d:.14s">
@@ -84,6 +84,7 @@
               <li><i data-icon="type"></i><div><strong>Writing style</strong>ALL CAPS, !!! and fragmented sentences</div></li>
               <li><i data-icon="sparkles"></i><div><strong>Extraordinary claims</strong>Miracle cures, "share before it's deleted"</div></li>
               <li><i data-icon="globe"></i><div><strong>Domain credibility</strong>Trusted outlets, satire and look-alike sites</div></li>
+              <li><i data-icon="cpu"></i><div><strong>Machine learning</strong>Naive Bayes + Logistic Regression trained on labelled news</div></li>
             </ul>
           </div>
         </aside>
@@ -95,6 +96,7 @@
   <script src="js/data.js"></script>
   <script src="js/analyzer.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/pages.js"></script>
   <script src="js/three-scene.js"></script>
 </body>

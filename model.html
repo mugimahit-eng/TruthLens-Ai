@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ML Lab · TruthLens AI</title>
+  <meta name="description" content="Accuracy, speed and training for the TruthLens machine-learning models, plus the REST API of the Node.js backend.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <script>(function(d){d.classList.add('js');try{var s=JSON.parse(localStorage.getItem('tl_settings')||'{}');d.setAttribute('data-theme',s.theme||'dark');d.setAttribute('data-accent',s.accent||'blue');if(s.effects3d===false)d.classList.add('no-3d');if(s.reduceMotion)d.classList.add('no-motion');}catch(e){}})(document.documentElement);</script>
+</head>
+<body data-page="model">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header id="site-header"></header>
+
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow" data-reveal><span class="dot"></span>ML Lab</span>
+        <h1 data-reveal style="--d:.05s">The <span class="grad-text">machine-learning</span> engine</h1>
+        <p data-reveal style="--d:.1s">TruthLens blends explainable rules with trained models. See how accurate each one is, measure the speed, teach the models with your own labelled data and call them from the REST API.</p>
+      </div>
+    </section>
+
+    <section class="section-tight" style="padding-top:12px">
+      <div class="container">
+        <!-- Engine status + benchmark -->
+        <section class="card engine-card" data-reveal>
+          <div class="engine-head">
+            <div>
+              <div class="status-line" id="eng-status"><span class="dot off"></span>Connecting to the engine…</div>
+              <p class="small" id="eng-desc"></p>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-primary btn-sm" id="bench-btn" type="button"><i data-icon="zap"></i>Run speed benchmark</button>
+              <button class="btn btn-ghost btn-sm" id="refresh-btn" type="button"><i data-icon="refresh"></i>Refresh</button>
+            </div>
+          </div>
+          <dl class="kv kv-4" id="eng-kv"></dl>
+          <div class="bench-out" id="bench-out" hidden></div>
+        </section>
+
+        <!-- Models -->
+        <div class="grid grid-2 model-grid" id="model-grid">
+          <div class="card model-card loading"><p class="muted">Training models…</p></div>
+          <div class="card model-card loading"><p class="muted">Training models…</p></div>
+        </div>
+
+        <!-- How the ensemble works -->
+        <section class="card" data-reveal style="margin-top:24px">
+          <h2 class="card-title"><i data-icon="layers"></i>How the ensemble decides</h2>
+          <div class="grid grid-3 ml-explain">
+            <div><span class="step-num">01 · RULES</span><h3>Explainable signals</h3><p>Seven lexicon and style detectors (clickbait, sourcing, hype, repetition…) plus a domain check produce the rule score.</p></div>
+            <div><span class="step-num">02 · MODELS</span><h3>Two text classifiers</h3><p>Words, bigrams and style tokens are hashed into 131,072 features. Naive Bayes and AdaGrad Logistic Regression each learn from the labelled examples.</p></div>
+            <div><span class="step-num">03 · STACKING</span><h3>Meta-learner</h3><p>A logistic meta-learner, fitted on out-of-fold predictions, learns how much to trust each model and outputs a calibrated fake probability.</p></div>
+          </div>
+          <p class="hint" style="margin-top:14px">Accuracy is measured with stratified k-fold cross-validation: every number above comes from examples the model did not see while training. The built-in dataset is small and hand-written, so treat its scores as a demo. Train on a public dataset below for real-world numbers.</p>
+        </section>
+
+        <!-- Training -->
+        <section class="card train-card" id="train" data-reveal style="margin-top:24px">
+          <div class="card-head">
+            <h2 class="card-title"><i data-icon="database"></i>Train with your own dataset</h2>
+            <div class="tabs" id="train-type" role="tablist" aria-label="Model to train">
+              <button type="button" class="tab active" data-type="news" role="tab" aria-selected="true"><i data-icon="news"></i>News model</button>
+              <button type="button" class="tab" data-type="review" role="tab" aria-selected="false"><i data-icon="star"></i>Review model</button>
+            </div>
+          </div>
+          <p class="small">Upload a labelled CSV, TSV or JSON file. Training runs on the active engine with cross-validation, then replaces the current model. Your file is read in the browser; only the mapped text and labels are sent to the engine.</p>
+          <div class="train-grid">
+            <div class="train-step">
+              <span class="step-num">1 · FILE</span>
+              <label class="file-drop" for="train-file">
+                <i data-icon="upload"></i>
+                <strong>Choose a dataset file</strong>
+                <span id="file-name">CSV, TSV, JSON or JSON Lines · up to 50,000 rows</span>
+                <input class="sr-only" type="file" id="train-file" accept=".csv,.tsv,.txt,.json,.jsonl">
+              </label>
+              <div id="mapping" hidden>
+                <span class="step-num" style="margin-top:18px">2 · COLUMNS</span>
+                <div class="field-row">
+                  <div class="field"><label for="map-text">Text column</label><select class="select" id="map-text"></select></div>
+                  <div class="field" id="map-title-field"><label for="map-title">Headline column <span class="muted">optional</span></label><select class="select" id="map-title"></select></div>
+                  <div class="field" id="map-rating-field" hidden><label for="map-rating">Star rating column <span class="muted">optional</span></label><select class="select" id="map-rating"></select></div>
+                </div>
+                <div class="field"><label for="map-label">Label</label><select class="select" id="map-label"></select></div>
+                <div class="field" id="map-values-field" hidden>
+                  <span class="field-label">Which values mean fake? <span class="muted">unticked values count as real</span></span>
+                  <div class="chips" id="map-values"></div>
+                </div>
+                <button class="btn btn-ghost btn-sm" id="add-rows" type="button"><i data-icon="plus"></i>Add rows to training set</button>
+              </div>
+            </div>
+            <div class="train-step">
+              <span class="step-num">3 · TRAIN</span>
+              <div class="staged" id="staged"></div>
+              <label class="check-row"><input type="checkbox" id="include-seed" checked><span>Also include the built-in examples and your feedback</span></label>
+              <div class="btn-row">
+                <button class="btn btn-primary btn-sm" id="train-btn" type="button" disabled><i data-icon="cpu"></i>Train model</button>
+                <button class="btn btn-ghost btn-sm" id="clear-staged" type="button" disabled><i data-icon="trash"></i>Clear rows</button>
+              </div>
+              <div class="train-progress" id="train-progress" hidden><div class="progress"><span></span></div><p class="hint" id="train-stage"></p></div>
+              <div id="train-result"></div>
+            </div>
+          </div>
+          <div class="notice" style="margin-top:20px"><i data-icon="info"></i><span>Works with public datasets such as <b>Fake and Real News</b> (add Fake.csv as “all fake” and True.csv as “all real”), <b>WELFake</b>, <b>LIAR</b>, the <b>Deceptive Opinion Spam</b> corpus (deceptive / truthful) and the <b>Fake Reviews</b> dataset (CG / OR labels). In browser mode large models may not fit in local storage; run <code>node server.js</code> to keep them.</span></div>
+        </section>
+
+        <!-- REST API -->
+        <section class="card" id="api" data-reveal style="margin-top:24px">
+          <h2 class="card-title"><i data-icon="code"></i>REST API</h2>
+          <p class="small">Start the backend with <code>node server.js</code> (or <code>npm start</code>). The website and these JSON endpoints are served from <code data-origin>http://localhost:5510</code>.</p>
+          <div class="api-table" role="table" aria-label="API endpoints">
+            <div class="api-row" role="row"><span class="method get" role="cell">GET</span><code role="cell">/api/health</code><span role="cell">Engine status and a summary of both models</span></div>
+            <div class="api-row" role="row"><span class="method get" role="cell">GET</span><code role="cell">/api/model</code><span role="cell">Full metrics: accuracy, F1, AUC, confusion matrix, top features</span></div>
+            <div class="api-row" role="row"><span class="method post" role="cell">POST</span><code role="cell">/api/analyze/news</code><span role="cell">Analyse <code>{ title, text, url }</code></span></div>
+            <div class="api-row" role="row"><span class="method post" role="cell">POST</span><code role="cell">/api/analyze/review</code><span role="cell">Analyse <code>{ text, rating, verified, product }</code></span></div>
+            <div class="api-row" role="row"><span class="method post" role="cell">POST</span><code role="cell">/api/analyze/batch</code><span role="cell">Up to 500 inputs: <code>{ type, inputs: [...] }</code></span></div>
+            <div class="api-row" role="row"><span class="method post" role="cell">POST</span><code role="cell">/api/feedback</code><span role="cell">Teach the model: <code>{ type, input, label: "fake" | "real" }</code></span></div>
+            <div class="api-row" role="row"><span class="method post" role="cell">POST</span><code role="cell">/api/train</code><span role="cell">Retrain: <code>{ type, rows: [{ text, label }], includeSeed }</code></span></div>
+            <div class="api-row" role="row"><span class="method post" role="cell">POST</span><code role="cell">/api/reset</code><span role="cell">Back to the built-in model: <code>{ type }</code></span></div>
+          </div>
+          <pre class="code"><span class="c"># analyse a headline from the command line</span>
+<span class="k">curl</span> -X POST <span data-origin>http://localhost:5510</span>/api/analyze/news \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Miracle fruit melts belly fat overnight, doctors shocked"}'</pre>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="js/data.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/pages.js"></script>
+</body>
+</html>

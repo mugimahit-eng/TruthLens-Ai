@@ -55,6 +55,8 @@
     sliders: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
     brain: '<path d="M9 4a3 3 0 0 0-3 3v.5A3 3 0 0 0 4 10.3 3 3 0 0 0 5 16a3 3 0 0 0 4 3.8V4z"/><path d="M15 4a3 3 0 0 1 3 3v.5a3 3 0 0 1 2 2.8 3 3 0 0 1-1 5.7 3 3 0 0 1-4 3.8V4z"/>',
     graduation: '<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 11v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 9v6"/>',
+    code: '<path d="m8 8-5 4 5 4"/><path d="m16 8 5 4-5 4"/><path d="m14 4-4 16"/>',
+    upload: '<path d="M12 16V5"/><path d="m7 10 5-5 5 5"/><path d="M5 20h14"/>',
     rocket: '<path d="M5 15c-1.5 1.3-2 4-2 6 2 0 4.7-.5 6-2"/><path d="M14 4c3-1 6-1 6-1s0 3-1 6l-7 7-5-5z"/><path d="M9 11 5 11 3 13l4 1"/><path d="M13 15v4l-2 2-1-4"/><circle cx="15.5" cy="8.5" r="1.5"/>'
   };
   TL.icon = function (name, cls) {
@@ -76,7 +78,7 @@
   };
 
   var DEFAULTS = { name: 'Guest User', email: '', theme: 'dark', accent: 'blue', effects3d: true, reduceMotion: false,
-    sensitivity: 'balanced', saveHistory: true, highlight: true, createdAt: null };
+    sensitivity: 'balanced', saveHistory: true, highlight: true, engine: 'auto', useML: true, createdAt: null };
   TL.getSettings = function () {
     var s = Object.assign({}, DEFAULTS, TL.store.get(KEYS.settings, {}));
     if (!s.createdAt) { s.createdAt = new Date().toISOString(); TL.store.set(KEYS.settings, s); }
@@ -110,6 +112,13 @@
     for (var i = 0; i < h.length; i++) if (h[i].id === id) return h[i];
     var last = TL.store.get(KEYS.last, null);
     return last && last.id === id ? last : null;
+  };
+  TL.updateResult = function (r) {
+    var h = TL.getHistory(), found = false;
+    for (var i = 0; i < h.length; i++) if (h[i].id === r.id) { h[i] = r; found = true; }
+    if (found) TL.setHistory(h);
+    var last = TL.store.get(KEYS.last, null);
+    if (last && last.id === r.id) TL.store.set(KEYS.last, r);
   };
   TL.deleteResult = function (id) { TL.setHistory(TL.getHistory().filter(function (r) { return r.id !== id; })); };
   TL.clearHistory = function () { TL.store.remove(KEYS.history); TL.store.remove(KEYS.last); };
@@ -157,7 +166,8 @@
   var EXTRA = [
     { href: 'result.html', key: 'result', label: 'Analysis Result', icon: 'chart' },
     { href: 'dashboard.html', key: 'dashboard', label: 'Profile / Dashboard', icon: 'user' },
-    { href: 'settings.html', key: 'settings', label: 'Settings', icon: 'settings' }
+    { href: 'settings.html', key: 'settings', label: 'Settings', icon: 'settings' },
+    { href: 'model.html', key: 'model', label: 'ML Lab', full: 'ML Lab · AI Model', icon: 'cpu' }
   ];
 
   function brandHTML() {
@@ -185,6 +195,7 @@
           return '<li><a href="' + n.href + '"' + (n.key === page ? ' class="active" aria-current="page"' : '') + '>' + n.label + '</a></li>';
         }).join('') + '</ul>' +
         '<div class="nav-actions">' +
+        '<a class="icon-btn hide-xs' + (page === 'model' ? ' active' : '') + '" href="model.html" title="ML Lab: models, accuracy and training" aria-label="ML Lab">' + TL.icon('cpu') + '</a>' +
         '<a class="icon-btn hide-xs' + (page === 'dashboard' ? ' active' : '') + '" href="dashboard.html" title="Profile / Dashboard" aria-label="Profile and dashboard">' + TL.icon('user') + '</a>' +
         '<a class="icon-btn hide-xs' + (page === 'settings' ? ' active' : '') + '" href="settings.html" title="Settings" aria-label="Settings">' + TL.icon('settings') + '</a>' +
         '<button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme"></button>' +
@@ -220,9 +231,9 @@
       };
       footer.innerHTML =
         '<div class="container"><div class="footer-grid">' +
-        '<div>' + brandHTML() + '<p>An AI-powered mini project that detects fake news and fake product reviews using explainable natural language analysis.</p></div>' +
+        '<div>' + brandHTML() + '<p>An AI-powered mini project that detects fake news and fake product reviews by combining explainable language rules with trained machine-learning models.</p></div>' +
         col('Detect', [NAV[1], NAV[2], EXTRA[0]]) +
-        col('Explore', [NAV[3], NAV[4], NAV[6]]) +
+        col('Explore', [NAV[3], NAV[4], EXTRA[3], NAV[6]]) +
         col('Account', [EXTRA[1], NAV[5], EXTRA[2]]) +
         '</div><div class="footer-bottom"><span>© ' + new Date().getFullYear() + ' TruthLens AI · Academic mini project</span>' +
         '<span>Results are probabilistic. Always verify important information with trusted sources.</span></div></div>';
@@ -312,26 +323,38 @@
   };
 
   /* ---------------- Scanner overlay ---------------- */
-  TL.scan = function (steps) {
-    steps = steps || ['Tokenising and cleaning text', 'Extracting linguistic features', 'Scoring with detection model', 'Generating explanation'];
+  TL.fmtMs = function (ms) { return ms == null ? '' : ms < 1 ? ms.toFixed(2) + ' ms' : ms < 100 ? ms.toFixed(1) + ' ms' : Math.round(ms) + ' ms'; };
+  // Shows the analysis overlay. `job` is the analysis promise: steps advance quickly
+  // and the overlay closes as soon as the real result is ready.
+  TL.scan = function (steps, job) {
+    steps = steps || ['Tokenising and extracting features', 'Running the rule signals', 'Scoring with the ML ensemble', 'Generating the explanation'];
     var ov = document.createElement('div');
     ov.className = 'scan-overlay';
     ov.setAttribute('role', 'alertdialog'); ov.setAttribute('aria-label', 'Analysing');
     ov.innerHTML = '<div class="scan-box card"><div class="scanner" aria-hidden="true"><div class="orbit"></div><div class="orbit"></div><div class="doc"><i></i><i></i><i></i><i></i><i></i></div></div>' +
       '<h3>AI is analysing…</h3><div class="progress"><span></span></div><ul class="scan-steps">' +
-      steps.map(function (s) { return '<li><span class="st"></span>' + TL.esc(s) + '</li>'; }).join('') + '</ul></div>';
+      steps.map(function (s) { return '<li><span class="st"></span>' + TL.esc(s) + '</li>'; }).join('') + '</ul><p class="scan-time" aria-live="polite"></p></div>';
     document.body.appendChild(ov);
     window.dispatchEvent(new CustomEvent('tl:scan', { detail: true }));
     requestAnimationFrame(function () { ov.classList.add('show'); });
     var items = ov.querySelectorAll('.scan-steps li'), bar = ov.querySelector('.progress span');
     var fast = root.classList.contains('no-motion') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    var per = fast ? 120 : 520;
-    return new Promise(function (resolve) {
-      var i = 0;
+    var per = fast ? 40 : 150;
+    return new Promise(function (resolve, reject) {
+      var i = 0, settled = false, value, error;
+      Promise.resolve(job).then(function (v) { settled = true; value = v; }, function (e) { settled = true; error = e || new Error('Analysis failed'); });
+      function finish() {
+        if (!settled) { setTimeout(finish, 25); return; }
+        if (error) { ov.remove(); reject(error); return; }
+        var eng = value && value.engine;
+        if (eng) ov.querySelector('.scan-time').innerHTML = TL.icon('zap') + 'Done in ' + TL.fmtMs(eng.roundTripMs || eng.ms) + (TL.api ? ' · ' + TL.esc(TL.api.label(eng.backend)) : '');
+        bar.style.width = '100%';
+        setTimeout(function () { resolve(value); }, fast ? 60 : 420);
+      }
       (function next() {
         if (i > 0) { items[i - 1].className = 'done'; items[i - 1].querySelector('.st').innerHTML = TL.icon('check'); }
         bar.style.width = Math.round((i / items.length) * 100) + '%';
-        if (i === items.length) { setTimeout(function () { resolve(); }, fast ? 50 : 260); return; }
+        if (i === items.length) { finish(); return; }
         items[i].className = 'doing'; i++;
         setTimeout(next, per);
       })();
@@ -341,12 +364,16 @@
   /* ---------------- Run analysis and open the result ---------------- */
   TL.runAnalysis = function (type, input) {
     var settings = TL.getSettings();
-    var result = type === 'news'
-      ? TL.analyzer.analyzeNews(input, { sensitivity: settings.sensitivity })
-      : TL.analyzer.analyzeReview(input, { sensitivity: settings.sensitivity });
-    return TL.scan().then(function () {
+    var job = TL.api ? TL.api.analyze(type, input) : new Promise(function (resolve) {
+      resolve(type === 'news'
+        ? TL.analyzer.analyzeNews(input, { sensitivity: settings.sensitivity })
+        : TL.analyzer.analyzeReview(input, { sensitivity: settings.sensitivity }));
+    });
+    return TL.scan(null, job).then(function (result) {
       TL.saveResult(result);
       location.href = 'result.html?id=' + encodeURIComponent(result.id);
+    }, function (err) {
+      TL.toast('Analysis failed: ' + ((err && err.message) || 'unknown error'), 'error');
     });
   };
 

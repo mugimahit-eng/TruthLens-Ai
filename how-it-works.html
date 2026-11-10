@@ -21,7 +21,7 @@
       <div class="container">
         <span class="eyebrow" data-reveal><span class="dot"></span>How It Works</span>
         <h1 data-reveal style="--d:.05s">Inside the <span class="grad-text">detection engine</span></h1>
-        <p data-reveal style="--d:.1s">TruthLens AI uses an explainable natural-language model. Instead of a black box, every verdict is built from signals you can see and understand.</p>
+        <p data-reveal style="--d:.1s">TruthLens AI combines an explainable rule engine with trained machine-learning models. Every verdict comes with the signals, words and model scores behind it, so it is never a black box.</p>
       </div>
     </section>
 
@@ -32,7 +32,7 @@
           <div class="step" data-reveal><div class="icon-box"><i data-icon="file"></i></div><span class="step-num">01 · INPUT</span><h3>Collect</h3><p>Article text, headline, URL or a product review with rating.</p></div>
           <div class="step" data-reveal style="--d:.06s"><div class="icon-box"><i data-icon="type"></i></div><span class="step-num">02 · PREPROCESS</span><h3>Clean</h3><p>Normalise case, split sentences, tokenise words, detect numbers and quotes.</p></div>
           <div class="step" data-reveal style="--d:.12s"><div class="icon-box"><i data-icon="layers"></i></div><span class="step-num">03 · FEATURES</span><h3>Extract</h3><p>Match lexicons, count punctuation and caps, measure repetition and detail.</p></div>
-          <div class="step" data-reveal style="--d:.18s"><div class="icon-box"><i data-icon="cpu"></i></div><span class="step-num">04 · MODEL</span><h3>Score</h3><p>Seven weighted risk signals combine through a logistic function.</p></div>
+          <div class="step" data-reveal style="--d:.18s"><div class="icon-box"><i data-icon="cpu"></i></div><span class="step-num">04 · MODEL</span><h3>Score</h3><p>Rule signals, Naive Bayes and Logistic Regression are stacked by a meta-learner.</p></div>
           <div class="step" data-reveal style="--d:.24s"><div class="icon-box"><i data-icon="brain"></i></div><span class="step-num">05 · EXPLAIN</span><h3>Explain</h3><p>Verdict, confidence, reasons and evidence highlighted in the text.</p></div>
         </div>
       </div>
@@ -46,7 +46,7 @@
             <div class="layer" style="--i:0">1 · Raw input</div>
             <div class="layer" style="--i:1">2 · Tokens &amp; features</div>
             <div class="layer" style="--i:2">3 · Signal detectors</div>
-            <div class="layer" style="--i:3">4 · Weighted scoring</div>
+            <div class="layer" style="--i:3">4 · ML ensemble</div>
             <div class="layer" style="--i:4">5 · Verdict &amp; reasons</div>
           </div>
         </div>
@@ -54,12 +54,17 @@
           <span class="eyebrow"><span class="dot"></span>Model architecture</span>
           <h2>Layered, <span class="grad-text">transparent</span> scoring</h2>
           <p>Each layer turns the text into something more abstract. Raw words become features such as hype terms, attribution phrases, ALL-CAPS ratio and feature mentions. Detectors convert those features into risk signals from 0 to 100.</p>
-          <p>The signals are averaged with weights, blended with the two strongest signals so one severe red flag is never hidden, and passed through a logistic curve that outputs the <b>fake likelihood</b>. Hover the stack to separate the layers.</p>
-          <pre class="code"><span class="c">// simplified scoring model</span>
+          <p>The signals are averaged with weights and blended with the two strongest, so one severe red flag is never hidden. In parallel, two machine-learning classifiers read the same text: <b>Naive Bayes</b> and <b>Logistic Regression</b> trained on labelled examples of word, bigram and style features.</p>
+          <p>A <b>meta-learner</b>, fitted with cross-validation, learns how far to trust each model and outputs the final <b>fake likelihood</b>. Rules catch obvious manipulation; the models catch subtle fakes that use no trigger words. Hover the stack to separate the layers, or open the <a href="model.html" style="color:var(--accent);font-weight:600">ML Lab</a> to see each model's accuracy.</p>
+          <pre class="code"><span class="c">// 1. rule engine</span>
 <span class="k">weighted</span> = Σ(riskᵢ × weightᵢ) / Σ weightᵢ
-<span class="k">x</span>        = 0.75 × weighted + 0.25 × avg(top 2 risks)
-<span class="k">fake %</span>   = 100 / (1 + e^(−(x − c) / 10))
-<span class="c">// c = 30 strict · 36 balanced · 42 lenient</span></pre>
+<span class="k">rule %</span>   = σ((0.75 × weighted + 0.25 × top-2 − c) / 10)
+<span class="c">// 2. text classifiers on hashed word + bigram features x</span>
+<span class="k">z_nb</span>     = log P(fake | x) − log P(real | x)
+<span class="k">z_lr</span>     = w · x + b
+<span class="c">// 3. stacked meta-learner (weights learned out-of-fold)</span>
+<span class="k">fake %</span>   = σ(a₁·z_nb + a₂·z_lr + a₃·logit(rule %) + a₀)
+<span class="c">// sensitivity shifts the final logit: strict +0.5 · lenient −0.5</span></pre>
         </div>
       </div>
     </section>
@@ -156,9 +161,11 @@
         <div class="faq" data-reveal>
           <details><summary>Is the AI always right?<i data-icon="plus"></i></summary><p>No automated detector is perfect. TruthLens AI looks for patterns that commonly appear in fake content, so well-written misinformation can score low and unusual genuine writing can score high. Use it as a first filter, not a final judgement.</p></details>
           <details><summary>Does it check facts against the internet?<i data-icon="plus"></i></summary><p>The current version analyses how content is written and where it comes from, not whether each fact is true. That is why the Verified News page links to professional fact-checkers for claim-level verification.</p></details>
-          <details><summary>Is my data sent anywhere?<i data-icon="plus"></i></summary><p>No. All analysis runs in your browser with JavaScript, and history is stored in your browser's local storage. You can export or delete it at any time from Settings.</p></details>
+          <details><summary>Is my data sent anywhere?<i data-icon="plus"></i></summary><p>When you open the site directly, everything runs in your browser (in a background Web Worker) and nothing leaves your device. When it is served by the TruthLens Node.js backend, text is sent to that server for analysis; it is only stored there if you give feedback. You can force browser-only analysis in Settings. History always stays in your browser's local storage.</p></details>
           <details><summary>What does the sensitivity setting do?<i data-icon="plus"></i></summary><p>It shifts the centre of the scoring curve. "Strict" flags content earlier (fewer missed fakes, more false alarms) and "Lenient" does the opposite. "Balanced" is the default.</p></details>
-          <details><summary>How could this be improved with machine learning?<i data-icon="plus"></i></summary><p>The same signals can be used as features for a supervised model such as Logistic Regression, Random Forest or a fine-tuned transformer (BERT), trained on public datasets like LIAR or FakeNewsNet for news and labelled opinion-spam corpora for reviews.</p></details>
+          <details><summary>Does it use machine learning?<i data-icon="plus"></i></summary><p>Yes. A Naive Bayes and a Logistic Regression classifier are trained on labelled examples and stacked with the rule engine by a meta-learner. Accuracy, F1 and AUC are measured with k-fold cross-validation and shown in the ML Lab. The built-in training set is small, so for real-world accuracy train the models on a public dataset such as LIAR, WELFake or a labelled opinion-spam corpus.</p></details>
+          <details><summary>Does it learn from me?<i data-icon="plus"></i></summary><p>Yes. On every result you can say whether the verdict was right. The model updates immediately (online learning) and keeps the correction for future checks. You can also upload a whole labelled CSV or JSON dataset in the ML Lab and retrain from scratch.</p></details>
+          <details><summary>How fast is it?<i data-icon="plus"></i></summary><p>A typical check takes about a millisecond of compute, because the models are compact linear models over hashed features and repeated inputs are cached. The ML Lab has a benchmark that measures the throughput on your machine.</p></details>
         </div>
         <div class="center" style="margin-top:36px" data-reveal>
           <div class="btn-row" style="justify-content:center">
@@ -174,6 +181,7 @@
   <script src="js/data.js"></script>
   <script src="js/analyzer.js"></script>
   <script src="js/core.js"></script>
+  <script src="js/api.js"></script>
   <script src="js/pages.js"></script>
 </body>
 </html>
